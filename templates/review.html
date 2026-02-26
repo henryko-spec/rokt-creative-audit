@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}Review Queue — Job #{{ job_id }}{% endblock %}
+{% block content %}
+<div class="review-page" data-job-id="{{ job_id }}">
+    <div class="job-header">
+        <a href="/jobs/{{ job_id }}" class="back-link">&larr; Back to Job</a>
+        <h1>Review Queue — Job #{{ job_id }}</h1>
+    </div>
+
+    <div class="review-stats" id="review-stats">
+        <span class="review-counter" id="review-counter">Loading...</span>
+    </div>
+
+    <div class="review-cards" id="review-cards">
+        <p class="loading">Loading flagged creatives...</p>
+    </div>
+
+    <div class="review-empty" id="review-empty" style="display:none;">
+        <h2>All clear!</h2>
+        <p>No flagged creatives to review.</p>
+        <a href="/jobs/{{ job_id }}" class="btn btn-primary">Back to Job</a>
+    </div>
+</div>
+
+<!-- Email Modal -->
+<div class="modal" id="email-modal" style="display:none;">
+    <div class="modal-content">
+        <h3>Flag & Email AM</h3>
+        <div class="form-group">
+            <label for="email-to">Account Manager Email:</label>
+            <input type="email" id="email-to" placeholder="am@example.com">
+        </div>
+        <div class="form-group">
+            <label for="email-note">Note (optional):</label>
+            <textarea id="email-note" rows="3" placeholder="Additional context..."></textarea>
+        </div>
+        <div class="modal-actions">
+            <button class="btn btn-secondary" onclick="closeEmailModal()">Cancel</button>
+            <button class="btn btn-danger" id="send-email-btn">Send & Flag</button>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const jobId = document.querySelector('.review-page').dataset.jobId;
+    loadReviewQueue(jobId);
+});
+</script>
+{% endblock %}

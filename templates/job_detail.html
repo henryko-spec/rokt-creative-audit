@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block title %}Job #{{ job_id }} — Rokt Creative Audit{% endblock %}
+{% block content %}
+<div class="job-detail" data-job-id="{{ job_id }}">
+    <div class="job-header">
+        <a href="/" class="back-link">&larr; Back to Dashboard</a>
+        <h1>Audit Job #{{ job_id }}</h1>
+    </div>
+
+    <div class="progress-section" id="progress-section">
+        <div class="progress-bar-container">
+            <div class="progress-bar" id="progress-bar" style="width: 0%"></div>
+        </div>
+        <div class="progress-text" id="progress-text">Loading...</div>
+    </div>
+
+    <div class="stats-grid" id="stats-grid" style="display:none;">
+        <div class="stat-card stat-approved">
+            <div class="stat-number" id="stat-approved">0</div>
+            <div class="stat-label">Approved</div>
+        </div>
+        <div class="stat-card stat-rejected">
+            <div class="stat-number" id="stat-rejected">0</div>
+            <div class="stat-label">Rejected</div>
+        </div>
+        <div class="stat-card stat-flagged">
+            <div class="stat-number" id="stat-flagged">0</div>
+            <div class="stat-label">Flagged</div>
+        </div>
+        <div class="stat-card stat-total">
+            <div class="stat-number" id="stat-total">0</div>
+            <div class="stat-label">Total</div>
+        </div>
+    </div>
+
+    <div class="actions-bar" id="actions-bar" style="display:none;">
+        <a href="/api/jobs/{{ job_id }}/download/csv" class="btn btn-primary">Download Final CSV</a>
+        <a href="/api/jobs/{{ job_id }}/download/report" class="btn btn-secondary">Download Arbiter Report</a>
+        <a href="/review/{{ job_id }}" class="btn btn-warning" id="review-btn">Review Queue (<span id="review-count">0</span>)</a>
+    </div>
+
+    <div class="creatives-table-section" id="creatives-section" style="display:none;">
+        <h2>All Creatives</h2>
+        <div class="filter-bar">
+            <button class="filter-btn active" data-filter="">All</button>
+            <button class="filter-btn" data-filter="approved">Approved</button>
+            <button class="filter-btn" data-filter="flagged">Flagged</button>
+        </div>
+        <table class="creatives-table" id="creatives-table">
+            <thead>
+                <tr>
+                    <th>Row</th>
+                    <th>Advertiser</th>
+                    <th>Creative ID</th>
+                    <th>Title</th>
+                    <th>Alpha</th>
+                    <th>Beta</th>
+                    <th>Final</th>
+                    <th>Reason</th>
+                </tr>
+            </thead>
+            <tbody id="creatives-tbody"></tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const jobId = document.querySelector('.job-detail').dataset.jobId;
+    pollJobProgress(jobId);
+});
+</script>
+{% endblock %}

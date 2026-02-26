@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Dashboard — Rokt Creative Audit{% endblock %}
+{% block content %}
+<div class="dashboard">
+    <section class="upload-section">
+        <h1>Creative Compliance Audit</h1>
+        <p class="subtitle">Upload a CSV of campaign creatives to run the multi-agent AI compliance audit.</p>
+
+        <div class="upload-area" id="upload-area">
+            <div class="upload-icon">&#8593;</div>
+            <p>Drag & drop your CSV file here</p>
+            <p class="upload-hint">or click to browse</p>
+            <input type="file" id="file-input" accept=".csv" hidden>
+        </div>
+
+        <div class="upload-status" id="upload-status" style="display:none;">
+            <div class="spinner"></div>
+            <span id="upload-status-text">Uploading...</span>
+        </div>
+
+        <div class="upload-error" id="upload-error" style="display:none;"></div>
+    </section>
+
+    <section class="jobs-section">
+        <h2>Past Audits</h2>
+        <div id="jobs-list" class="jobs-list">
+            <p class="loading">Loading...</p>
+        </div>
+    </section>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    initUpload();
+    loadJobs();
+});
+</script>
+{% endblock %}
